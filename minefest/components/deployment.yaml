@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft
+  template:
+    metadata:
+      labels:
+        app: minecraft
+    spec:
+      containers:
+      - name: minecraft
+        image: minecraft-server:latest
+        ports:
+        - containerPort: 25565
+        volumeMounts:
+        - name: minecraft-data
+          mountPath: /minecraft/data
+      volumes:
+      - name: minecraft-data
+        persistentVolumeClaim:
+          claimName: minecraft-data-claim
